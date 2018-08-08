@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <eq/eq.h>
+//#include <eq/eq.h>
 
 #include "FrameData.h"
 

@@ -60,7 +60,7 @@ set(CUDA_SOURCES cull.cu fragments.cu CUDAContext.cpp)
 # Release builds with Ubuntu 16.04.
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -D_FORCE_INLINES -DCUDA_API_PER_THREAD_DEFAULT_STREAM ${GENCODE_FLAGS}")
 cuda_add_library(rtneuron_cuda SHARED ${CUDA_SOURCES})
-target_link_libraries(rtneuron_cuda Lunchbox ${Boost_THREAD_LIBRARY})
+target_link_libraries(rtneuron_cuda Lunchbox ${Boost_THREAD_LIBRARY} ${OPENSCENEGRAPH_LIBRARIES})
 list(APPEND RTNEURON_LIBRARIES rtneuron_cuda)
 set(RTNEURON_LIBRARIES "${RTNEURON_LIBRARIES}" PARENT_SCOPE)
 

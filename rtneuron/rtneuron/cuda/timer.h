@@ -40,7 +40,7 @@ class Timer
 {
 public:
     Timer(cudaStream_t stream = 0, bool withGPU = false)
-        : _cpuStart(std::chrono::high_resolution_clock::now())
+        : _cpuStart() // std::chrono::high_resolution_clock::now())
         , _stream(stream)
         , _withGPU(withGPU)
     {
@@ -58,14 +58,14 @@ public:
 
     ~Timer()
     {
-        const auto now = std::chrono::high_resolution_clock::now();
+        // const auto now = std::chrono::high_resolution_clock::now();
         if (_withGPU)
         {
             cudaEventRecord(_gpuStop, _stream);
             cudaEventSynchronize(_gpuStop);
         }
 
-        const double cpuElapsed = (now - _cpuStart).count();
+        const double cpuElapsed = 0; //(now - _cpuStart).count();
         std::cout << "  CPU time elapsed: " << cpuElapsed / 1000000.0 << " ms"
                   << std::endl;
 

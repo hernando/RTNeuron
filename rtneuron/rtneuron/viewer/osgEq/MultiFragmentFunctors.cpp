@@ -282,9 +282,13 @@ MultiFragmentFunctors::MultiFragmentFunctors(core::CUDAContext* context,
     : _cudaContext(context)
     , _dToHcopyStream(context->createStream())
     , _contextID(contextID)
-    , _counts{Texture::Type::image, nullptr, nullptr, nullptr, "counts"}
-    , _heads{Texture::Type::image, nullptr, nullptr, nullptr, "heads"}
-    , _fragments{Texture::Type::buffer, nullptr, nullptr, nullptr, "fragments"}
+    , _counts{Texture::Type::image, nullptr, nullptr, {nullptr}, "counts"}
+    , _heads{Texture::Type::image, nullptr, nullptr, {nullptr}, "heads"}
+    , _fragments{Texture::Type::buffer,
+                 nullptr,
+                 nullptr,
+                 {nullptr},
+                 "fragments"}
     , _totalNumFragments(0)
 {
 }
@@ -326,8 +330,9 @@ void MultiFragmentFunctors::setup(const cudaArray_t counts,
                                   const cudaArray_t heads, void* fragments,
                                   const size_t totalFragments)
 {
-    _counts = Texture{Texture::Type::image, nullptr, nullptr, counts, "counts"};
-    _heads = Texture{Texture::Type::image, nullptr, nullptr, heads, "heads"};
+    _counts =
+        Texture{Texture::Type::image, nullptr, nullptr, {counts}, "counts"};
+    _heads = Texture{Texture::Type::image, nullptr, nullptr, {heads}, "heads"};
     _fragments = Texture{Texture::Type::buffer,
                          nullptr,
                          nullptr,

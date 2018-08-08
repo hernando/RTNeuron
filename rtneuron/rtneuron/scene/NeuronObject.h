@@ -94,7 +94,6 @@ private:
 
     RepresentationMode _restrictedMode;
     bool _subsetDirty;
-    bool _issueLoadOnUpdate;
 
     /* Modified only on client side operations */
     struct ClientMembers

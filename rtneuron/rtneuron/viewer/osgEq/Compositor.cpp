@@ -21,11 +21,16 @@
 
 #include "Channel.h"
 
+#include <eq/channelStatistics.h>
 #include <eq/compositor.h>
 #include <eq/fabric/subPixel.h>
+#include <eq/frameData.h>
 #include <eq/util/accum.h>
 #include <eq/util/objectManager.h>
+#include <eq/version.h>
 #include <eq/window.h>
+
+#include <co/exception.h>
 
 #include <osg/GL>
 

@@ -30,6 +30,9 @@
 #include <boost/scoped_ptr.hpp>
 
 #include <cuda.h>
+#if defined __APPLE__ && defined OSG_GL3_AVAILABLE
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#endif
 #include <cuda_gl_interop.h>
 #include <cuda_runtime.h>
 
@@ -198,6 +201,7 @@ public:
     const CUDAContext& operator*() const { return *_context; }
     CUDAContext* operator->() { return _context; }
     const CUDAContext* operator->() const { return _context; }
+
 private:
     /*--- Private member variables ---*/
     CUDAContext* _context;

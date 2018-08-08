@@ -253,7 +253,7 @@ void SynapseObject::onAttributeChangingImpl(
     }
     else if (name == "visible")
     {
-        (bool)parameters;
+        (void)(bool) parameters;
     }
     else
         throw std::runtime_error("Unknown or inmmutable attribute: " + name);

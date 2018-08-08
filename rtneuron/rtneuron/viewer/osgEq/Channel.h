@@ -27,7 +27,8 @@
 #include "Window.h"
 #include "render/DepthOfField.h"
 
-#include <eq/eq.h>
+#include <eq/channel.h>
+#include <eq/frame.h>
 
 #include <boost/scoped_ptr.hpp>
 #include <fstream>

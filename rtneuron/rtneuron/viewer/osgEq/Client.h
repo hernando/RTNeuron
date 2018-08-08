@@ -24,7 +24,8 @@
 
 #include <osg/ref_ptr>
 
-#include <eq/eq.h>
+#include <eq/client.h>
+
 #include <lunchbox/monitor.h>
 
 #include <list>
@@ -129,6 +130,7 @@ public:
     Application* getApplication() { return _application; }
     osgEq::Node* getLocalNode() { return _localNode; }
     const osgEq::Node* getLocalNode() const { return _localNode; }
+
 protected:
     /*--- Protected member attributes ---*/
 

@@ -358,6 +358,7 @@ private:
         virtual void serialize(co::DataOStream& os, const uint64_t bits);
         virtual void deserialize(co::DataIStream& is, const uint64_t bits);
         virtual void notifyNewVersion() { sync(); }
+
     private:
         View& _view;
     };
@@ -397,7 +398,7 @@ private:
     std::string _filePrefix;
     std::string _fileFormat;
 
-    struct SnapshotHelper;
+    class SnapshotHelper;
     SnapshotHelper* _snapshotHelper;
 
     // The base class should also be valid, but boost serialization crashes

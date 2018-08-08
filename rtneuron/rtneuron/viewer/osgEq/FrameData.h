@@ -27,7 +27,9 @@
 #include <boost/lambda/construct.hpp>
 #include <boost/lambda/lambda.hpp>
 
-#include <eq/eq.h>
+#include <co/dataIStream.h>
+#include <co/dataOStream.h>
+#include <co/object.h>
 
 #include <osg/CullSettings>
 #include <osg/Matrix>

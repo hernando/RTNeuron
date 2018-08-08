@@ -52,10 +52,6 @@
 #include <mutex>
 #include <unordered_set>
 
-// This seems to be buggy if multiple contexts are available. Also the
-// stream is not cleaned up properly.
-//#define CREATE_OWN_STREAMS
-
 #ifdef WIN32
 #undef near
 #undef far
@@ -136,6 +132,7 @@ public:
 
     T* get() { return operator T*(); }
     const T* get() const { return operator const T*(); }
+
 private:
     boost::weak_ptr<T> _weakRef;
     boost::shared_array<T> _array;
@@ -546,27 +543,12 @@ void Skeleton::MasterCullCallbackImpl::synchCulledSkeletons(
         Skeleton::PerCameraAndEyeState& state = skeleton._state[cameraID];
         start = std::min(start, state.offset);
         end = std::max(end, state.offset + skeleton._sectionCount);
-#ifdef CREATE_OWN_STREAMS
-#ifndef NDEBUG
-        cudaError_t error = cudaStreamSynchronize(skeleton._stream);
-        if (error != cudaSuccess)
-        {
-            std::cerr << cudaGetErrorString(error) << skeleton._stream
-                      << std::endl;
-            abort();
-        }
-#else
-        cudaStreamSynchronize(skeleton._stream);
-#endif
-#endif
     }
 
-#ifndef CREATE_OWN_STREAMS
     osg::GraphicsContext* context = renderInfo.getState()->getGraphicsContext();
     CUDAContext* cudaContext =
         dynamic_cast<CUDAContext*>(context->getUserData());
     cudaStreamSynchronize(cudaContext->defaultStream());
-#endif
 
     uint32_t* devVisibilities = _deviceVisibilities[cameraID].second.get();
     uint32_t* visibilities = _hostVisibilities[cameraID].second.get();
@@ -925,7 +907,6 @@ Skeleton::Skeleton(const Skeleton& skeleton)
 #ifdef USE_CUDA
     , _perDeviceArray(skeleton._perDeviceArray)
     , _deviceArraySize(skeleton._deviceArraySize)
-    , _stream(0)
 #endif
     , _clippingInfo(new SoftClippingInfo())
     , _maxVisibleOrder(skeleton._maxVisibleOrder)
@@ -1538,14 +1519,7 @@ void Skeleton::_cull(const osg::Matrixf& modelview,
                      PerCameraAndEyeState& state)
 {
     CUDAContext* context = CUDAContext::getCurrentContext();
-    cudaStream_t stream;
-#ifdef CREATE_OWN_STREAMS
-    if (_stream == 0)
-        _stream = context->createStream();
-    stream = _stream;
-#else
-    stream = context->defaultStream();
-#endif
+    cudaStream_t stream = context->defaultStream();
     if (state.ready == 0)
         state.ready = context->createEvent();
 

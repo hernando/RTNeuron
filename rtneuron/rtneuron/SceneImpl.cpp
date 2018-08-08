@@ -42,7 +42,6 @@
 #include "util/transformString.h"
 #include "util/vec_to_vec.h"
 
-#define EQ_IGNORE_GLEW
 #include "viewer/osgEq/Config.h"
 #include "viewer/osgEq/FrameData.h"
 
@@ -153,6 +152,7 @@ public:
     }
 
     void operator()(rtneuron::Scene::_Impl&) const final {}
+
 private:
     friend class boost::serialization::access;
     template <class Archive>
@@ -202,6 +202,7 @@ public:
     }
 
     void operator()(rtneuron::Scene::_Impl&) const final {}
+
 private:
     friend class boost::serialization::access;
     template <class Archive>
@@ -227,6 +228,7 @@ public:
     }
 
     void operator()(rtneuron::Scene::_Impl&) const final {}
+
 private:
     friend class boost::serialization::access;
     template <class Archive>

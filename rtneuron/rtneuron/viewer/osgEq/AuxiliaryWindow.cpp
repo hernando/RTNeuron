@@ -20,6 +20,10 @@
  */
 
 #include <QApplication>
+//#ifdef __APPLE__
+//#  define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+//#endif
+//#include <eq/gl.h>
 
 #include "AuxiliaryWindow.h"
 
@@ -81,6 +85,7 @@ public:
     }
 
     const eq::admin::Windows& getResult() const { return _windows; }
+
 private:
     eq::View* const _view;
     eq::admin::Windows _windows;
@@ -243,8 +248,8 @@ bool AuxiliaryWindow::_configure()
     lunchbox::Request<bool> request =
         _mainConfig->getLocalNode()->registerRequest<bool>();
     /* Posting the event */
-    _mainConfig->sendEvent(osgEq::ConfigEvent::RECONFIGURE_REQUEST) << true
-                                                                    << request;
+    _mainConfig->sendEvent(osgEq::ConfigEvent::RECONFIGURE_REQUEST)
+        << true << request;
     /* Wait for RECONFIGURE_REQUEST to be processed giving Qt the opportunity
        to dispatch events, otherwise the Equalizer window can't be created. */
     bool success;

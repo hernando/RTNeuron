@@ -19,6 +19,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef __APPLE__
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#endif
 #include <eq/gl.h>
 
 #include "InitData.h"
@@ -57,6 +60,10 @@
 
 #include <eq/admin/init.h>
 #include <eq/eventICommand.h>
+#include <eq/global.h>
+#include <eq/layout.h>
+#include <eq/nodeFactory.h>
+#include <eq/server.h>
 
 #include <lunchbox/scopedMutex.h>
 
@@ -1205,9 +1212,9 @@ bool RTNeuron::_Impl::handleEvent(eq::EventICommand command)
         unsigned int mappers = command.read<unsigned int>();
         lunchbox::ScopedWrite mutex(_lock);
         _mappersPerNode[nodeID] = mappers;
-        LBLOG(LOG_SIMULATION_PLAYBACK) << "PREPARING_SIMULATION event, node "
-                                       << nodeID << ", mappers " << mappers
-                                       << std::endl;
+        LBLOG(LOG_SIMULATION_PLAYBACK)
+            << "PREPARING_SIMULATION event, node " << nodeID << ", mappers "
+            << mappers << std::endl;
         break;
     }
     case RTNeuronEvent::NODE_INIT:
@@ -1633,8 +1640,8 @@ void RTNeuron::_Impl::_processSimulationTimestamp(const uint32_t frameNumber)
         frameData.getFrameAttribute("current_simulation_timestamp", timestamp))
     {
         /* Applying requested timestamp */
-        LBLOG(LOG_SIMULATION_PLAYBACK) << "map simulation data " << timestamp
-                                       << std::endl;
+        LBLOG(LOG_SIMULATION_PLAYBACK)
+            << "map simulation data " << timestamp << std::endl;
 
         _timestampReady = timestamp;
         /* Cleared, so calls to _simulationReady triggerred by
@@ -1657,9 +1664,9 @@ void RTNeuron::_Impl::_processSimulationTimestamp(const uint32_t frameNumber)
         for (const auto& scene : scenes)
             mappers += scene->prepareSimulation(frameNumber + 1, timestamp);
 
-        LBLOG(LOG_SIMULATION_PLAYBACK) << "prepare simulation data, timestamp "
-                                       << timestamp << ", mappers " << mappers
-                                       << std::endl;
+        LBLOG(LOG_SIMULATION_PLAYBACK)
+            << "prepare simulation data, timestamp " << timestamp
+            << ", mappers " << mappers << std::endl;
 
         /* Notify how many mappers are working on this time stamp to know
            how many simulationUpdated signals will be sent.
@@ -1701,8 +1708,8 @@ void RTNeuron::_Impl::_onSimulationUpdated(const double timestamp)
     /* _client->getConfig() can't be used in client nodes */
     osgEq::Config* config = _client->getLocalNode()->getConfig();
 
-    LBLOG(LOG_SIMULATION_PLAYBACK) << "Simulation updated to " << timestamp
-                                   << std::endl;
+    LBLOG(LOG_SIMULATION_PLAYBACK)
+        << "Simulation updated to " << timestamp << std::endl;
 
     config->sendEvent(RTNeuronEvent::SIMULATION_READY) << timestamp;
 }
@@ -1735,10 +1742,10 @@ bool RTNeuron::_Impl::_notifyTimestamp(const double timestamp)
         expected += i->second;
     }
 
-    LBLOG(LOG_SIMULATION_PLAYBACK) << "Simulation ready notified: timestamp "
-                                   << timestamp << " notification "
-                                   << notifications << '(' << expected << ')'
-                                   << std::endl;
+    LBLOG(LOG_SIMULATION_PLAYBACK)
+        << "Simulation ready notified: timestamp " << timestamp
+        << " notification " << notifications << '(' << expected << ')'
+        << std::endl;
 
     /* Checking if all notifications have arrived. */
     if (notifications < expected)
@@ -1796,14 +1803,14 @@ void RTNeuron::_Impl::_scheduleNextTimestamp(const double current)
 
     const double next = finalTimestamp + _simulationDelta;
     const bool finished = next >= _simulationEnd || next < _simulationStart;
-    LBLOG(LOG_SIMULATION_PLAYBACK) << finalTimestamp << ' ' << _simulationDelta
-                                   << ' ' << _simulationStart << ' '
-                                   << _simulationEnd << std::endl;
+    LBLOG(LOG_SIMULATION_PLAYBACK)
+        << finalTimestamp << ' ' << _simulationDelta << ' ' << _simulationStart
+        << ' ' << _simulationEnd << std::endl;
 
     if (!finished)
     {
-        LBLOG(LOG_SIMULATION_PLAYBACK) << "Advancing simulation to: " << next
-                                       << std::endl;
+        LBLOG(LOG_SIMULATION_PLAYBACK)
+            << "Advancing simulation to: " << next << std::endl;
         frameData.setFrameAttribute("next_simulation_timestamp", next);
         _nextTimestamp = next;
     }

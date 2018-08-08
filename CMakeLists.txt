@@ -57,6 +57,9 @@ common_find_package(BBPTestData)
 common_find_package(Collage REQUIRED)
 common_find_package(CUDA)
 common_find_package(Equalizer REQUIRED)
+#if (GLEW_APPLE_GLX)
+#  common_find_package(GLEW_MX)
+#endif()
 common_find_package(Monsteer)
 common_find_package(Lexis)
 common_find_package(LibJpegTurbo 1.2.1)
@@ -84,6 +87,9 @@ common_find_package(ZeroEQ)
 # Fake subproject to check if there's a GPU available. Checking it with
 # common_find_package will print out the test result in the configuration log.
 common_find_package(GPUTests)
+#if(GLEW_APPLE_GLX)
+#  common_find_package(X11 SYSTEM)
+#endif()
 
 common_find_package_post()
 
@@ -100,8 +106,10 @@ list(APPEND CPPCHECK_EXTRA_ARGS
 list(APPEND RTNEURON_LIBRARIES
   PUBLIC Brain Lunchbox vmmlib ${OPENSCENEGRAPH_LIBRARIES}
   PRIVATE ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} osgTransparency Equalizer
-          EqualizerAdmin
-)
+          EqualizerAdmin)
+#if(GLEW_APPLE_GLX)
+#  list(APPEND RTNEURON_LIBRARIES ${X11_LIBRARIES} ${GLEW_MX_LIBRARIES})
+#endif()
 
 # We need to find Boost.Python in FindPackages, but we don't want the core
 # libraries to depend on it

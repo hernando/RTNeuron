@@ -20,6 +20,10 @@
  */
 
 #include <QApplication>
+#define EQ_IGNORE_GLEW
+#ifdef __APPLE__
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#endif
 #include <eq/gl.h> // Don't move down glew must be included before GL
 
 #include "Application.h"

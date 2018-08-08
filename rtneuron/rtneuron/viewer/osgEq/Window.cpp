@@ -19,10 +19,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <eq/qt/window.h>
-
-#include <eq/gl.h>
 #include <eq/qt/shareContextWindow.h>
+#include <eq/qt/window.h>
+#include <eq/windowSystem.h>
 
 #include "Channel.h"
 #include "Config.h"

@@ -32,6 +32,9 @@ namespace core
 {
 /*
   Base abstract interface for all scene objects
+
+  Derived classes mustn't have any side effect in the implementation of
+  onAttributeChangingImpl, it should be used only for attribute verification.
 */
 class SceneObject : public ClientSceneObject,
                     public rtneuron::Scene::Object,
@@ -60,12 +63,6 @@ public:
     {
     }
 
-    /* Used only for attribute verification.
-       The implementation mustn't have any side effect. */
-    virtual void onAttributeChangingImpl(
-        const AttributeMap& attributes, const std::string& name,
-        const AttributeMap::AttributeProxy& parameters) = 0;
-
     void update(SubScene&, const AttributeMap&) override {}
     /** Merge the input attributes with _current */
     void update(Scene::_Impl& scene, const AttributeMap& attributes) override;
@@ -76,6 +73,7 @@ public:
         that when update() is called in any subset handler the operation
         is effective. */
     virtual void dirtySubsets() {}
+
 protected:
     /*--- Protected member attributes ---*/
 

@@ -54,7 +54,6 @@ set(RTNEURON_CORE_SOURCES
   render/RenderBinManager.cpp
   render/SceneStyle.cpp
   render/Skeleton.cpp
-  render/Text.cpp
   render/ViewStyle.cpp
   render/timing.cpp
   scene/CircuitScene.cpp

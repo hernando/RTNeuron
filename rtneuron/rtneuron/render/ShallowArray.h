@@ -112,6 +112,14 @@ public:
             return 0;
     }
 
+    virtual const GLvoid* getDataPointer(unsigned int index) const
+    {
+        if (_length)
+            return _array + index;
+        else
+            return 0;
+    }
+
     virtual unsigned int getTotalDataSize() const
     {
         return _length * sizeof(T);

@@ -22,7 +22,6 @@
 #ifndef RTNEURON_OSGEQ_EMBEDDEDWINDOW_H
 #define RTNEURON_OSGEQ_EMBEDDEDWINDOW_H
 
-#include <eq/eq.h>
 #include <osgViewer/GraphicsWindow>
 
 namespace bbp

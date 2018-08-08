@@ -30,7 +30,8 @@
 #include <memory>
 
 #include <eq/admin/types.h>
-#include <eq/eq.h>
+#include <eq/config.h>
+#include <eq/fabric/renderContext.h>
 #include <eq/version.h>
 
 namespace bbp
@@ -72,14 +73,14 @@ public:
        Inits the configuration.
        This function is only called from the application node.
      */
-    virtual bool init(const eq::uint128_t& initID);
+    bool init(const eq::uint128_t& initID) override;
 
-    virtual bool exit();
+    bool exit() override;
 
     bool isDone() const { return _done; }
     void setDone();
 
-    virtual uint32_t startFrame(const eq::uint128_t& frameID);
+    uint32_t startFrame(const eq::uint128_t& frameID) override;
 
     void setInitData(const InitDataPtr& initData);
 

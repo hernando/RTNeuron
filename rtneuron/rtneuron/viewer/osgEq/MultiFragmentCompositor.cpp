@@ -49,8 +49,6 @@ public:
     struct Colors
     {
         const static uint32_t pink = 0x00ff007f;
-        const static uint32_t red = 0x00ff0000;
-        const static uint32_t orange = 0x00ff7f00;
         const static uint32_t yellow = 0x00ffff00;
         const static uint32_t green = 0x003fdf00;
         const static uint32_t gray = 0x007f7f7f;

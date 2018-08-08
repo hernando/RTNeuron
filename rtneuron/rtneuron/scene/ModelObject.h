@@ -69,7 +69,7 @@ protected:
 
     /*--- Protected member functions ---*/
 
-    void applyAttribute(const AttributeMap&, const std::string&);
+    void applyAttribute(const AttributeMap&, const std::string&) override;
 
     bool preUpdateImplementation() final { return false; }
 };

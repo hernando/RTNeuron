@@ -449,9 +449,6 @@ private:
        this skeleton. */
     std::shared_ptr<DeviceArrays> _perDeviceArray;
     size_t _deviceArraySize = 0;
-
-    /* Only used if the skeleton is creating its own stream */
-    cudaStream_t _stream = 0;
 #endif
 
     std::shared_ptr<SoftClippingInfo> _clippingInfo;

@@ -39,6 +39,7 @@
 #include "util/log.h"
 
 #include <osg/CullSettings>
+#include <osg/GL>
 #include <osg/ValueObject>
 #include <osg/Version>
 #include <osgDB/WriteFile>
@@ -54,7 +55,12 @@
 #include <lunchbox/rng.h>
 
 #include <eq/compositor.h>
-#include <eq/eq.h>
+#include <eq/frameData.h>
+#include <eq/image.h>
+#include <eq/imageOp.h>
+#include <eq/pixelData.h>
+#include <eq/util/accum.h>
+#include <eq/util/texture.h>
 
 #include <boost/shared_array.hpp>
 
@@ -504,8 +510,7 @@ bool Channel::configInit(const eq::uint128_t& initDataID)
         /* Don't create the texture for snapshot channels. */
         getName() != "aux channel")
     {
-        _texture =
-            getObjectManager().newEqTexture(this, GL_TEXTURE_RECTANGLE_ARB);
+        _texture = getObjectManager().newEqTexture(this, GL_TEXTURE_RECTANGLE);
     }
     return true;
 }
@@ -1219,7 +1224,7 @@ void Channel::_singleFragmentCompositing(
 
 void Channel::_updateRegionOfInterest()
 {
-#if !defined NDEBUG or defined DEBUG_ROI
+#if (!defined NDEBUG or defined DEBUG_ROI) and !defined OSG_GL3_AVAILABLE
     const eq::PixelViewport& vp = getPixelViewport();
     applyViewport();
     glMatrixMode(GL_PROJECTION);
@@ -1244,7 +1249,7 @@ void Channel::_updateRegionOfInterest()
                                         region[2] - region[0],
                                         region[3] - region[1]));
 
-#if !defined NDEBUG or defined DEBUG_ROI
+#if (!defined NDEBUG or defined DEBUG_ROI) and !defined OSG_GL3_AVAILABLE
     const eq::PixelViewport r = getRegion();
 
     eq::Vector4f rect(r.x + 0.5f, r.y + 0.5f, r.getXEnd() - 0.5f,
@@ -1465,8 +1470,8 @@ void Channel::_grabFrameSendEvent()
     if (success != 0)
     {
         LBERROR << "libjpeg-turbo image conversion failure" << std::endl;
-        getConfig()->sendEvent(ConfigEvent::GRAB_FRAME) << view.getID()
-                                                        << uint64_t(jpegSize);
+        getConfig()->sendEvent(ConfigEvent::GRAB_FRAME)
+            << view.getID() << uint64_t(jpegSize);
         return;
     }
 
@@ -1483,8 +1488,8 @@ void Channel::_grabFrameSendEvent()
 
 void Channel::_writeFrame(const eq::uint128_t& frameID)
 {
-    LBLOG(core::LOG_FRAME_RECORDING) << " writing frame " << frameID
-                                     << std::endl;
+    LBLOG(core::LOG_FRAME_RECORDING)
+        << " writing frame " << frameID << std::endl;
 
     View& view = static_cast<View&>(*getNativeView());
 

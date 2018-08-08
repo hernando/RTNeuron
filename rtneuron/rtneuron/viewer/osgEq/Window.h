@@ -56,9 +56,9 @@ protected:
     virtual ~Window() {}
     /* Member functions */
 public:
-    virtual bool configInitGL(const eq::uint128_t& initID);
+    bool configInitGL(const eq::uint128_t& initID) override;
 
-    virtual bool configExitGL();
+    bool configExitGL() override;
 
     bool configInitSystemWindow(const eq::uint128_t& initID) override;
 

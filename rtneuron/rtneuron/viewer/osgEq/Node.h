@@ -28,6 +28,7 @@
 #include "render/ViewStyle.h"
 
 #include <eq/config.h>
+#include <eq/node.h>
 
 #include <lunchbox/refPtr.h>
 #include <memory>
@@ -95,6 +96,7 @@ public:
        (e.g. Application::preNodeUpdate).
     */
     const FrameData& getFrameData() const { return _frameData; }
+
 protected:
     /*--- Protected functions ---*/
 

@@ -22,8 +22,6 @@
 #ifndef RTNEURON_OSGEQ_NODEVIEWER_H
 #define RTNEURON_OSGEQ_NODEVIEWER_H
 
-#include <eq/gl.h>
-
 #include <osgGA/EventQueue>
 #include <osgViewer/CompositeViewer>
 

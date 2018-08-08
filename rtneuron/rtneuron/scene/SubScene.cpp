@@ -19,9 +19,14 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#define EQ_IGNORE_GLEW
+#ifdef __APPLE__
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#endif
+#include "eq/gl.h"
+
 #include "SubScene.h"
 
-#define EQ_IGNORE_GLEW
 #include "data/NeuronMesh.h"
 #include "data/SimulationDataMapper.h"
 #include "render/SceneStyle.h"
@@ -871,8 +876,8 @@ void SubScene::mapSimulation(const uint32_t /* frameNumber */,
         return;
     }
 
-    LBLOG(LOG_SIMULATION_PLAYBACK) << "mapping simulation at: " << milliseconds
-                                   << std::endl;
+    LBLOG(LOG_SIMULATION_PLAYBACK)
+        << "mapping simulation at: " << milliseconds << std::endl;
 
     /* This timestamp has not been prepared. */
     _simulationMapper->setSimulationAtTimestamp(milliseconds);
@@ -908,8 +913,8 @@ void SubScene::channelSync()
     std::unique_lock<std::mutex> lock(_mutex);
     if (_doSwapSimBuffers)
     {
-        LBLOG(LOG_SIMULATION_PLAYBACK) << "swap simulation buffers"
-                                       << std::endl;
+        LBLOG(LOG_SIMULATION_PLAYBACK)
+            << "swap simulation buffers" << std::endl;
 
         _simulationBuffer->swapBuffers();
         _simulationMapper->unblockUpdate();

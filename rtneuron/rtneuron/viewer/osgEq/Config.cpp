@@ -36,8 +36,13 @@
 
 #include <eq/admin/client.h>
 #include <eq/admin/server.h>
-#include <eq/eq.h>
-#include <eq/gl.h>
+#include <eq/canvas.h>
+#include <eq/eventICommand.h>
+#include <eq/fabric/keyEvent.h>
+#include <eq/fabric/pointerEvent.h>
+#include <eq/layout.h>
+#include <eq/observer.h>
+#include <eq/server.h>
 
 #include <boost/assert.hpp>
 
