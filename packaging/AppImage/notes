@@ -1,0 +1,20 @@
+docker pull centos:7.0.1406
+docker tag 284549eacf84 centos:latest
+
+docker run [--dns=8.8.8.8] --name rtneuron -it centos /bin/bash
+
+If exited, it can be restarted and then re-attached
+docker start -i container-id
+
+yum install -y zlib-devel bzip2-devel flex git tar gcc gcc-g++ make
+yum update -y nss nss-util nspr curl
+
+# CMake
+curl -OL https://cmake.org/files/v3.7/cmake-3.7.2.tar.gz && tar xfz cmake-3.7.2.tar.gz && cd cmake-3.7.2 && ./configure && make -j2 install
+
+curl -OL https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-3.4.1.tar.gz
+tar -zxvf OpenSceneGraph-3.4.1.tar.gz
+cd OpenSceneGraph-OpenSceneGraph-3.4.1/
+
+
+git clone https://github.com/BlueBrain/RTNeurong1
